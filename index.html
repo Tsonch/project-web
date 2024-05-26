@@ -18,26 +18,56 @@
             <nav class="header-nav">
                 <a href="">Корзина</a>
                 <a href="">Панель заказов</a>
-                <button class="header-btn">Заказы</button>
+                <button class="header-btn" data-bs-toggle="modal" data-bs-target="#orderModal">Заказы</button>
                 <a href="">Выход</a>
             </nav>
         </div>
     </header>
 
     <main>
-        <div class="modal right" tabindex="-1">
-            <div class="modal-dialog">
+        <div class="modal fade come-from-modal right" tabindex="-1" role="dialog" id="orderModal" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-style">
                <div class="modal-content">
-                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalBasicLabel">Заказы</h5>
-                    <button type="button" class="btn-close" aria-label="Закрыть"></button>
+                 <div class="modal-header modal-background">
+                    <h3 class="modal-title text-white" id="orderModalLabel">Заказы</h3>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                  </div>
-                 <div class="modal-body">
-
+                 <div class="modal-body modal-background">
+                    <div class="container order"> 
+                        <div class="order-head">
+                            <h3 class="text-black">Заказ №10</h3>
+                        </div>
+                        <div class="order-content">
+                            <p>Комментарий: фвофлывтлфывлофылвлфтывлофылвотфлы</p>
+                            <p>Статус: доставляется</p>
+                            <p>Цена: 3000р</p>
+                        </div>
+                    </div>
+                    <div class="container order"> 
+                        <div class="order-head">
+                            <h3 class="text-black">Заказ №10</h3>
+                        </div>
+                        <div class="order-content">
+                            <label for="comment">Комментарий:</label>
+                            <textarea name="comment" class="comm" disabled>хуй</textarea>
+                            <p>Статус: доставляется</p>
+                            <p>Цена: 3000р</p>
+                        </div>
+                    </div>
+                    <div class="container order"> 
+                        <div class="order-head">
+                            <h3 class="text-black">Заказ №10</h3>
+                        </div>
+                        <div class="order-content">
+                            <p>Комментарий: фвофлывтлфывлофылвлфтывлофылвотфлы</p>
+                            <p>Статус: доставляется</p>
+                            <p>Цена: 3000р</p>
+                        </div>
+                    </div>
                  </div>
-                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary">Закрыть</button>
-                 </div>
+                 <!-- <div class="modal-footer modal-background">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                 </div> -->
                </div>
             </div>
          </div>
@@ -411,6 +441,10 @@
             </div>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
 
 </body>
 
