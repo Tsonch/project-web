@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Stick&display=swap');
+
+main {
+    margin: 0 150px;
+}
+
+.item-title {
+    position: relative;
+    margin-bottom: 35px;
+}
+
+.item-title h2 {
+    margin-bottom: 10px;
+    font-family: 'Stick', sans-serif;
+}
+
+.item-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%; 
+    height: 2px;
+    background-color: black;
+}
+
+.container-item {
+    margin-bottom: 220px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.container-item img {
+    width: 243px;
+}
+
+.item-elements {
+    display: flex;
+    /* flex-direction: row; */
+    justify-content: center;
+    /* align-items: center; */
+    flex-wrap: wrap;
+    gap: 96px;
+    margin-bottom: 20px;
+}
+
+.element {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    /* width: 318px; */
+}
+
+.element-img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.element-img span {
+    /* display: inline-block; */
+    padding-right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.element-img div {
+    padding-top: 8px;
+}
+
+.element-content {
+    /* width: 240px; */
+    /* width: 550px; */
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.element-content h3 {
+    font-size: 28px;
+    font-weight: bold;
+    font-family: 'Stick', sans-serif;
+}
+
+.element-content div {
+    font-size: 20px;
+    font-weight: medium;
+}
+
+.element-content button {
+    width: 140px;
+    cursor: pointer;
+    height: 50px;
+    font-size: 24px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+}
