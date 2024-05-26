@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Stick&display=swap');
+
+footer div, a{
+    font-size: 20px;
+    color: #FFF;
+    font-weight: regular;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 266px;
+    /* width: 893px; */
+    background-color: #242424;
+}
+
+.footer-container div {
+    line-height: 1.6;
+}
