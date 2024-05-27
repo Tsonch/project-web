@@ -123,7 +123,9 @@ require_once './back/dbConnection.php';
                                     <?php echo $tempura_item['description'] ?>
                                 </div>
                                 <div>
-                                    <button class="main-btn">В корзину</button>
+                                    <?php if ($_SESSION['user']['role'] != "Manager") { ?>
+                                        <button class="main-btn">В корзину</button>
+                                    <?php } ?>
                                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
                                         <button class="main-btn">Редакт.</button>
                                     <?php } ?>
@@ -163,7 +165,9 @@ require_once './back/dbConnection.php';
                                     <?php echo $yakitori_item['description'] ?>
                                 </div>
                                 <div>
-                                    <button class="main-btn">В корзину</button>
+                                    <?php if ($_SESSION['user']['role'] != "Manager") { ?>
+                                        <button class="main-btn">В корзину</button>
+                                    <?php } ?>
                                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
                                         <button class="main-btn">Редакт.</button>
                                     <?php } ?>
@@ -203,7 +207,9 @@ require_once './back/dbConnection.php';
                                     <?php echo $sukiyaki_item['description'] ?>
                                 </div>
                                 <div>
-                                    <button class="main-btn">В корзину</button>
+                                    <?php if ($_SESSION['user']['role'] != "Manager") { ?>
+                                        <button class="main-btn">В корзину</button>
+                                    <?php } ?>
                                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
                                         <button class="main-btn">Редакт.</button>
                                     <?php } ?>
@@ -243,7 +249,9 @@ require_once './back/dbConnection.php';
                                     <?php echo $okonomiyaki_item['description'] ?>
                                 </div>
                                 <div>
-                                    <button class="main-btn">В корзину</button>
+                                    <?php if ($_SESSION['user']['role'] != "Manager") { ?>
+                                        <button class="main-btn">В корзину</button>
+                                    <?php } ?>
                                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
                                         <button class="main-btn">Редакт.</button>
                                     <?php } ?>
