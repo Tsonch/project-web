@@ -124,7 +124,9 @@ require_once './back/dbConnection.php';
                                 </div>
                                 <div>
                                     <button class="main-btn">В корзину</button>
-                                    <button class="main-btn">Редакт.</button>
+                                    <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                                        <button class="main-btn">Редакт.</button>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +164,9 @@ require_once './back/dbConnection.php';
                                 </div>
                                 <div>
                                     <button class="main-btn">В корзину</button>
-                                    <button class="main-btn">Редакт.</button>
+                                    <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                                        <button class="main-btn">Редакт.</button>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +204,9 @@ require_once './back/dbConnection.php';
                                 </div>
                                 <div>
                                     <button class="main-btn">В корзину</button>
-                                    <button class="main-btn">Редакт.</button>
+                                    <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                                        <button class="main-btn">Редакт.</button>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
