@@ -102,3 +102,118 @@ main {
     color: white;
     border: none;
 }
+
+
+
+/* КОРЗИНА */
+
+.cart-DelBtn {
+    cursor: pointer;
+    font-size: 32px;
+    height: 30px;
+    font-weight: bold;
+    background-color: rgb(0, 0, 0, 0);
+    color: rgb(0, 0, 0);
+    border: none;
+}
+
+.main-Cardcontainer .container-item {
+    width: 750px !important;
+}
+
+.main-Cardcontainer {
+    display: flex;
+    flex-direction: row;
+    gap: 90px;
+}
+
+.main-Cardcontainer img{
+    width: 175px;
+}
+
+.card-form textarea {
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: none; 
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 35px
+}
+
+.form-place {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* gap: 100px */
+    /* gap:5vw; */
+}
+
+.text-street {
+    width: 12vw;
+    height: 40px;
+}
+
+.text-house {
+    width: 10vw;
+    height: 40px;
+}
+
+.text-flat {
+    width: 10vw;
+    height: 40px;
+}
+
+.text-comment {
+    width: 90%;
+    height: 85px;
+}
+
+.card-form label {
+    font-size: 32px;
+    font-weight: medium;
+}
+
+
+
+/* ПАНЕЛЬ ЗАКАЗОВ */
+
+.order-element {
+    line-height: 1.4;
+    padding: 25px;
+    width: 630px;
+    height: 670px;
+    background-color: #242424;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+.order-element h2 {
+    font-size: 32px;
+    color: white;
+}
+
+.order-element details {
+    color: white;
+    font-size: 32px;
+
+}
+
+.order-element textarea {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: none; 
+    width: 465px;
+    height: 205px;
+}
