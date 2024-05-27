@@ -48,45 +48,43 @@ require_once './back/dbConnection.php';
     <main>
 
         <form action="/back/CRUD/uploadItem.php" method="post" enctype="multipart/form-data">
-            <div class="modal fade" id="managerModal" tabindex="-1" aria-labelledby="managerModalLabel" aria-hidden="true" role="dialog">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title" id="exampleModalLabel">Новый товар</h2>
-                        </div>
-                        <div class="modal-body">
-                            <form class="row g-3">
-                                <div class="col-6">
-                                    <label for="inputAddress" class="form-label h3">Название</label>
-                                    <input type="text" name='name' class="form-control" id="inputAddress" required>
-                                </div>
-                                <div class="col-6">
-                                    <label for="inputAddress" class="form-label h3">Цена</label>
-                                    <input type="number" name='price' class="form-control" id="inputAddress" required>
-                                </div>
-                                <div class="col-12">
-                                    <div class="input-group mb-3 h4">
-                                        <span require class="input-group-text h4" id="inputGroupFileAddon01">Изображение</span>
-                                        <div class="form-file">
-                                            <input type="file" name="image" class="form-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <label for="exampleFormControlTextarea1" class="form-label h3">Описание</label>
-                                    <textarea class="form-control mt-4" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                </div>
-
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                            <button type="submit" class="btn btn-primary">Сохранить</button>
-                        </div>
-                    </div>
+        <div class="modal fade" id="managerModal" tabindex="-1" aria-labelledby="managerModalLabel" aria-hidden="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="managerModalLabel">Новый товар</h2>
                 </div>
-
+                <div class="modal-body">
+                    <form action="/back/CRUD/uploadItem.php" method="post" enctype="multipart/form-data" class="row g-3">
+                        <div class="col-6">
+                            <label for="inputName" class="form-label h3">Название</label>
+                            <input type="text" name='name' class="form-control" id="inputName" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="inputPrice" class="form-label h3">Цена</label>
+                            <input type="number" name='price' class="form-control" id="inputPrice" required>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-group mb-3 h4">
+                                <span hidden class="input-group-text h4" id="inputGroupFileAddon01">Изображение</span>
+                                <div class="form-file">
+                                    <input type="file" name="image" class="form-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="exampleFormControlTextarea1" class="form-label h3">Описание</label>
+                            <textarea class="form-control mt-4" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+                </form>
             </div>
+        </div>
+    </div>
         </form>
 
         <div class="modal fade" id="managerModalRedact" tabindex="-1" aria-labelledby="managerModalRedactLabel" aria-hidden="true">
@@ -107,7 +105,7 @@ require_once './back/dbConnection.php';
                             </div>
                             <div class="col-12">
                                 <div class="input-group mb-3 h4">
-                                    <span class="input-group-text h4" id="inputGroupFileAddon01">Изображение</span>
+                                    <span hidden class="input-group-text h4" id="inputGroupFileAddon01">Изображение</span>
                                     <div class="form-file">
                                         <input type="file" name="image" class="form-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
                                     </div>
@@ -214,7 +212,7 @@ require_once './back/dbConnection.php';
                                 <div>
                                     <?php echo $tempura_item['description'] ?>
                                 </div>
-                                <div>
+                                <div class="element-buttons">
                                     <form action="/back/CRUD/addToCart.php" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="<?php echo $tempura_item['item_id'] ?>">
                                         <button type="submit" class="main-btn">В корзину</button>
@@ -255,7 +253,7 @@ require_once './back/dbConnection.php';
                                 <div>
                                     <?php echo $yakitori_item['description'] ?>
                                 </div>
-                                <div>
+                                <div class="element-buttons">
                                     <form action="/back/CRUD/addToCart.php" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="<?php echo $yakitori_item['item_id'] ?>">
                                         <button type="submit" class="main-btn">В корзину</button>
@@ -296,7 +294,7 @@ require_once './back/dbConnection.php';
                                 <div>
                                     <?php echo $sukiyaki_item['description'] ?>
                                 </div>
-                                <div>
+                                <div class="element-buttons">
                                     <form action="/back/CRUD/addToCart.php" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="<?php echo $sukiyaki_item['item_id'] ?>">
                                         <button type="submit" class="main-btn">В корзину</button>
@@ -337,7 +335,7 @@ require_once './back/dbConnection.php';
                                 <div>
                                     <?php echo $okonomiyaki_item['description'] ?>
                                 </div>
-                                <div>
+                                <div class="element-buttons">
                                     <form action="/back/CRUD/addToCart.php" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="id" value="<?php echo $okonomiyaki_item['item_id'] ?>">
                                         <button type="submit" class="main-btn">В корзину</button>
