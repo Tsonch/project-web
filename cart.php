@@ -19,8 +19,8 @@
     <header>
         <div class="header-container">
             <nav class="header-nav" style="width: 315px;">
-                <a href="index.html">Назад</a>
-                <a href="login.html">Выход</a>
+                <a href="index.php">Назад</a>
+                <a href="/back/sign_up_and_login/logout.php">Выход</a>
             </nav>
         </div>
     </header>

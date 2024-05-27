@@ -1,9 +1,9 @@
 <?php
 session_start();
 if (!isset($_SESSION['user'])) {
-	header("Location: login.php");
-} else if($_SESSION['user']['role'] == "Cook") {
-	header("Location: orders.php");
+    header("Location: login.php");
+} else if ($_SESSION['user']['role'] == "Cook") {
+    header("Location: orders.php");
 }
 require_once './back/dbConnection.php';
 ?>
@@ -22,8 +22,7 @@ require_once './back/dbConnection.php';
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon-16x16.png">
     <link rel="manifest" href="assets/favicon_io/site.webmanifest">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Суси • Главная</title>
 </head>
 
@@ -32,9 +31,15 @@ require_once './back/dbConnection.php';
     <header>
         <div class="header-container">
             <nav class="header-nav">
-                <a href="cart.html">Корзина</a>
-                <a href="orders.html">Панель заказов</a>
-                <button class="header-btn" data-bs-toggle="modal" data-bs-target="#orderModal">Заказы</button>
+                <?php if ($_SESSION['user']['role'] != "Manager") { ?>
+                    <a href="cart.php">Корзина</a>
+                <?php }
+                if ($_SESSION['user']['role'] == "Manager") { ?>
+                    <a href="orders.php">Панель заказов</a>
+                <?php }
+                if ($_SESSION['user']['role'] != "Manager") { ?>
+                    <button class="header-btn" data-bs-toggle="modal" data-bs-target="#orderModal">Заказы</button>
+                <?php } ?>
                 <a href="/back/sign_up_and_login/logout.php">Выход</a>
             </nav>
         </div>
@@ -43,398 +48,203 @@ require_once './back/dbConnection.php';
     <main>
         <div class="modal fade come-from-modal right" tabindex="-1" role="dialog" id="orderModal" aria-labelledby="orderModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-style">
-               <div class="modal-content">
-                 <div class="modal-header modal-background">
-                    <h3 class="modal-title text-white" id="orderModalLabel">Заказы</h3>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                 </div>
-                 <div class="modal-body modal-background">
-                    <div class="container order"> 
-                        <div class="order-head">
-                            <h3 class="text-black">Заказ №10</h3>
+                <div class="modal-content">
+                    <div class="modal-header modal-background">
+                        <h3 class="modal-title text-white" id="orderModalLabel">Заказы</h3>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body modal-background">
+                        <div class="container order">
+                            <div class="order-head">
+                                <h3 class="text-black">Заказ №10</h3>
+                            </div>
+                            <div class="order-content">
+                                <p>Комментарий: фвофлывтлфывлофылвлфтывлофылвотфлы</p>
+                                <p>Статус: доставляется</p>
+                                <p>Цена: 3000р</p>
+                            </div>
                         </div>
-                        <div class="order-content">
-                            <p>Комментарий: фвофлывтлфывлофылвлфтывлофылвотфлы</p>
-                            <p>Статус: доставляется</p>
-                            <p>Цена: 3000р</p>
+                        <div class="container order">
+                            <div class="order-head">
+                                <h3 class="text-black">Заказ №10</h3>
+                            </div>
+                            <div class="order-content">
+                                <label for="comment">Комментарий:</label>
+                                <textarea name="comment" class="comm" disabled>хуй</textarea>
+                                <p>Статус: доставляется</p>
+                                <p>Цена: 3000р</p>
+                            </div>
+                        </div>
+                        <div class="container order">
+                            <div class="order-head">
+                                <h3 class="text-black">Заказ №10</h3>
+                            </div>
+                            <div class="order-content">
+                                <p>Комментарий: фвофлывтлфывлофылвлфтывлофылвотфлы</p>
+                                <p>Статус: доставляется</p>
+                                <p>Цена: 3000р</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="container order"> 
-                        <div class="order-head">
-                            <h3 class="text-black">Заказ №10</h3>
-                        </div>
-                        <div class="order-content">
-                            <label for="comment">Комментарий:</label>
-                            <textarea name="comment" class="comm" disabled>хуй</textarea>
-                            <p>Статус: доставляется</p>
-                            <p>Цена: 3000р</p>
-                        </div>
-                    </div>
-                    <div class="container order"> 
-                        <div class="order-head">
-                            <h3 class="text-black">Заказ №10</h3>
-                        </div>
-                        <div class="order-content">
-                            <p>Комментарий: фвофлывтлфывлофылвлфтывлофылвотфлы</p>
-                            <p>Статус: доставляется</p>
-                            <p>Цена: 3000р</p>
-                        </div>
-                    </div>
-                 </div>
-                 <!-- <div class="modal-footer modal-background">
+                    <!-- <div class="modal-footer modal-background">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                  </div> -->
-               </div>
+                </div>
             </div>
-         </div>
+        </div>
 
         <div class="main-container">
+
             <div class="container-item"> <!-- Содержит в себе пункт меню -->
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>ТЕМПУРА</h2>
-                    <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                    <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                    <?php } ?>
                 </div>
+                <?php
+                $query = "SELECT * FROM items Where category = 'ТЕМПУРА'";
+                $tempura_items = $pdo->query($query);
+                ?>
                 <div class="item-elements"> <!-- Содержит в себе все карточки с меню -->
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/ebi-tempura.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>343 ₽</span><span>123 гр.</span>
+                    <?php
+                    while ($tempura_item = $tempura_items->fetch(PDO::FETCH_ASSOC)) {
+                    ?>
+                        <div class="element"> <!-- Карточка меню -->
+                            <div class="element-img">
+                                <img src="<?php echo $tempura_item['img_path'] ?>" alt="ТЕМПУРА">
+                                <div>
+                                    <span><?php echo $tempura_item['price'] ?> ₽</span><span><?php echo $tempura_item['grams'] ?> гр.</span>
+                                </div>
+                            </div>
+                            <div class="element-content">
+                                <h3><?php echo $tempura_item['name'] ?></h3>
+                                <div>
+                                    <?php echo $tempura_item['description'] ?>
+                                </div>
+                                <div>
+                                    <button class="main-btn">В корзину</button>
+                                    <button class="main-btn">Редакт.</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="element-content">
-                            <h3>ЭБИ ТЕМПУРА</h3>
-                            <div>
-                                Креветки, обжаренные в лёгком кляре.
-                                Подаются с соусом для темпуры (тенцую), натертым редисом дайкон и лимоном.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/unagi-tempura.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>643 ₽</span><span>223 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>ТЕМПУРА УНАГИ</h3>
-                            <div>
-                                Кусочки угоря, обваленные в тонком хрустящем тесте темпура и обжаренные до золотистой
-                                корочки.
-                                Подается с соусом тэнцую и нежным рисом.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/mics-tempura.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>643 ₽</span><span>300 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>ТЕМПУРА МИКС</h3>
-                            <div>
-                                Смесь морепродуктов, овощей и грибов, обваленных в легком тесте темпура и обжаренных до
-                                хрустящего состояния.
-                                Включает в себя креветки, кальмары, кабачки и шиитаке. Подается с соусом тэнцую.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/maguro-tempura.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>150 ₽</span><span>100 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>МАГУРО ТЕМПУРА</h3>
-                            <div>
-                                Нежные кусочки свежего тунца, обваленные в хрустящем тесте темпура и обжаренные до
-                                золотистой корочки.
-                                Подается с маринованным имбирем и соусом тэнцую.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
+
+
             <div class="container-item"> <!-- Содержит в себе пункт меню -->
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>ЯКИТОРИ</h2>
-                    <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                    <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                    <?php } ?>
                 </div>
+                <?php
+                $query = "SELECT * FROM items Where category = 'ЯКИТОРИ'";
+                $yakitori_items = $pdo->query($query);
+                ?>
                 <div class="item-elements"> <!-- Содержит в себе все карточки с меню -->
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/kantory-ykitory.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>350 ₽</span><span>115 гр.</span>
+                    <?php
+                    while ($yakitori_item = $yakitori_items->fetch(PDO::FETCH_ASSOC)) {
+                    ?>
+                        <div class="element"> <!-- Карточка меню -->
+                            <div class="element-img">
+                                <img src="<?php echo $yakitori_item['img_path'] ?>" alt="ТЕМПУРА">
+                                <div>
+                                    <span><?php echo $yakitori_item['price'] ?> ₽</span><span><?php echo $yakitori_item['price'] ?> гр.</span>
+                                </div>
+                            </div>
+                            <div class="element-content">
+                                <h3><?php echo $yakitori_item['name'] ?></h3>
+                                <div>
+                                    <?php echo $yakitori_item['description'] ?>
+                                </div>
+                                <div>
+                                    <button class="main-btn">В корзину</button>
+                                    <button class="main-btn">Редакт.</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="element-content">
-                            <h3>ЯКИТОРИИ КАНТОРИ</h3>
-                            <div>
-                                Нежные кусочки курицы, пропитанные в соусе Тэрияки и обжаренные на гриле до золотистой
-                                корочки.
-                                Подается с кунжутом и зеленым луком.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/yakitory-ebi.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>450 ₽</span><span>180 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>ЯКИТОРИ ЭБИ</h3>
-                            <div>
-                                Сочные креветки, маринованные в соусе Якитори и обжаренные на гриле до хрустящего
-                                состояния.
-                                Подается с лимоном и соусом кунжута.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/yakitory-yasai.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>300 ₽</span><span>160 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>ЯКИТОРИ ЯСАЙ</h3>
-                            <div>
-                                Ароматные овощи, такие как шампиньоны, паприка, кабачки и лук, на шпажках, обжаренные на
-                                гриле с соусом Якитори.
-                                Подается с соусом кунжута.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/yakitory-genbi.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>550 ₽</span><span>200 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>ЯКИТОРИ ГЁНБИ</h3>
-                            <div>
-                                Запеченные шашлычки из мяса утки, пропитанные в соусе Тэрияки и приправленные имбирем.
-                                Подается с кунжутом и зеленым луком.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
+
+
             <div class="container-item"> <!-- Содержит в себе пункт меню -->
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>СУКИЯКИ</h2>
-                    <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                    <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                    <?php } ?>
                 </div>
+                <?php
+                $query = "SELECT * FROM items Where category = 'СУКИЯКИ'";
+                $sukiyaki_items = $pdo->query($query);
+                ?>
                 <div class="item-elements"> <!-- Содержит в себе все карточки с меню -->
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/sukiyaki-gu.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>800 ₽</span><span>300 гр.</span>
+                    <?php
+                    while ($sukiyaki_item = $sukiyaki_items->fetch(PDO::FETCH_ASSOC)) {
+                    ?>
+                        <div class="element"> <!-- Карточка меню -->
+                            <div class="element-img">
+                                <img src="<?php echo $sukiyaki_item['img_path'] ?>" alt="ТЕМПУРА">
+                                <div>
+                                    <span><?php echo $sukiyaki_item['price'] ?> ₽</span><span><?php echo $sukiyaki_item['grams'] ?> гр.</span>
+                                </div>
+                            </div>
+                            <div class="element-content">
+                                <h3><?php echo $sukiyaki_item['name'] ?></h3>
+                                <div>
+                                    <?php echo $sukiyaki_item['description'] ?>
+                                </div>
+                                <div>
+                                    <button class="main-btn">В корзину</button>
+                                    <button class="main-btn">Редакт.</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="element-content">
-                            <h3>СУКИЯКИ С ГЮ</h3>
-                            <div>
-                                Нежные ломтики говядины, тонко нарезанные тонкими луковицами и грибами Шиитаке,
-                                обжаренные в плотном и ароматном соусе сукияки. Подается с прозрачными стеклянными
-                                лапшами и зеленым луком.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/sukiyaki-tofu.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>550 ₽</span><span>250 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>СУКИЯКИ С ТОФУ</h3>
-                            <div>
-                                Нежные кусочки тофу, обжаренные в сукияки соусе вместе с ломтями шампиньонов,
-                                луком и красным перцем. Подается с рисом и маринованным имбирем.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/sukiyaki-kinoko.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>600 ₽</span><span>280 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>СУКИЯКИ С КИНОКО</h3>
-                            <div>
-                                Сочные грибы Киноко, такие как шиитаке и шимидзу, обжаренные в сукияки соусе с тонкими
-                                луковицами и кубиками топинамбура.
-                                Подается с прозрачными стеклянными лапшами.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/sukiyaki-moreproduktu.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>900 ₽</span><span>320 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>СУКИЯКИ С МОРЕПРОДУКТАМИ</h3>
-                            <div>
-                                Сочные морепродукты, обжаренные в плотном соусе сукияки с овощами и грибами.
-                                Подается с прозрачными стеклянными лапшами и морским водорослями.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
+
+
             <div class="container-item"> <!-- Содержит в себе пункт меню -->
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>ОКОНОМИЯКИ</h2>
-                    <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                    <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                    <?php } ?>
                 </div>
+                <?php
+                $query = "SELECT * FROM items Where category = 'ОКОНОМИЯКИ'";
+                $okonomiyaki_items = $pdo->query($query);
+                ?>
                 <div class="item-elements"> <!-- Содержит в себе все карточки с меню -->
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/clasic-okonomiyaki.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>450 ₽</span><span>300 гр.</span>
+                    <?php
+                    while ($okonomiyaki_item = $okonomiyaki_items->fetch(PDO::FETCH_ASSOC)) {
+                    ?>
+                        <div class="element"> <!-- Карточка меню -->
+                            <div class="element-img">
+                                <img src="<?php echo $okonomiyaki_item['img_path'] ?>" alt="ТЕМПУРА">
+                                <div>
+                                    <span><?php echo $okonomiyaki_item['price'] ?> ₽</span><span><?php echo $okonomiyaki_item['grams'] ?> гр.</span>
+                                </div>
+                            </div>
+                            <div class="element-content">
+                                <h3><?php echo $okonomiyaki_item['name'] ?></h3>
+                                <div>
+                                    <?php echo $okonomiyaki_item['description'] ?>
+                                </div>
+                                <div>
+                                    <button class="main-btn">В корзину</button>
+                                    <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                                        <button class="main-btn">Редакт.</button>
+                                    <?php } ?>
+                                </div>
                             </div>
                         </div>
-                        <div class="element-content">
-                            <h3>КЛАССИЧЕСКИЙ ОКОНОМИЯКИ</h3>
-                            <div>
-                                Традиционный японский блинчик, приготовленный из теста с капустой и свининой, обжаренный
-                                до хрустящей корочки.
-                                Подается с соусом окономияки, майонезом, стружкой бонито и зеленым луком.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/okonomiyaki-moreproducti.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>550 ₽</span><span>320 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>ОКОНОМИЯКИ С МОРЕПРОДУКТАМИ</h3>
-                            <div>
-                                Нежные морепродукты, такие как креветки, кальмары и осьминог, смешанные с капустой и
-                                тестом, обжаренные до золотистого цвета.
-                                Подается с соусом окономияки, майонезом и нори.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/okonomiyaki-vetchina-sir.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>600 ₽</span><span>300 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>ОКОНОМИЯКИ С ГОВЯДИНОЙ И СЫРОМ</h3>
-                            <div>
-                                Сочные кусочки говядины и расплавленный сыр, смешанные с капустой и тестом, обжаренные
-                                до хрустящей корочки.
-                                Подается с соусом окономияки, майонезом, стружкой бонито и зелеными водорослями.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="element"> <!-- Карточка меню -->
-                        <div class="element-img">
-                            <img src="assets/img/veganskaya-okonomiyaki.png" alt="ТЕМПУРА">
-                            <div>
-                                <span>400 ₽</span><span>300 гр.</span>
-                            </div>
-                        </div>
-                        <div class="element-content">
-                            <h3>ВЕГАНСКИЙ ОКОНОМИЯКИ</h3>
-                            <div>
-                                Свежие овощи, такие как кабачки, морковь, грибы шиитаке и капуста, смешанные с тестом и
-                                обжаренные до золотистой корочки.
-                                Подается с соусом окономияки, веганским майонезом и зеленым луком.
-                            </div>
-                            <div>
-                                <button class="main-btn">В корзину</button>
-                                <button class="main-btn">Редакт.</button>
-                            </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -458,9 +268,7 @@ require_once './back/dbConnection.php';
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
 

@@ -17,10 +17,10 @@
     <header>
         <div class="header-container">
             <nav class="header-nav">
-                <a href="cart.html">Корзина</a>
-                <a href="index.html">Меню</a>
+                <a href="cart.php">Корзина</a>
+                <a href="index.php">Меню</a>
                 <button class="header-btn">Заказы</button>
-                <a href="login.html">Выход</a>
+                <a href="/back/sign_up_and_login/logout.php">Выход</a>
             </nav>
         </div>
     </header>
