@@ -116,66 +116,60 @@
             </aside>
             <div class="main-orders">
                 <?php while ($row = $stmt_orders->fetch(PDO::FETCH_ASSOC)) { 
-                            // Проверка доступности заказа для текущей роли и статуса
-                            if ($user_role == 'Cook' && !in_array($row['status'], ['ожидает готовки', 'в готовке', 'ожидает курьера', 'отмена', 'готов доставить'])) {
-                                continue;
-                            } elseif ($user_role == 'Courier' && !in_array($row['status'], ['в готовке', 'готов доставить', 'ожидает курьера', 'доставляется', 'возникла ошибка', 'переданно курьеру'])) {
-                                continue;
-                            } ?>
+                    // Проверка доступности заказа для текущей роли и статуса
+                    if ($user_role == 'Cook' && !in_array($row['status'], ['ожидает готовки', 'в готовке', 'ожидает курьера', 'отмена', 'готов доставить'])) {
+                        continue;
+                    } elseif ($user_role == 'Courier' && !in_array($row['status'], ['в готовке', 'готов доставить', 'ожидает курьера', 'доставляется', 'возникла ошибка', 'переданно курьеру'])) {
+                        continue;
+                    } ?>
 
                     <div class="order-element">
                         <h2>Заказ No<span><?php echo htmlspecialchars($row['order_id']); ?></span></h2>
                         <h2>Статус: <span><?php echo htmlspecialchars($row['status']); ?></span> </h2>
                         <!-- Меню выбора для каждой роли -->
-							<?php if ($user_role == 'Manager') { ?>
-                                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                    <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
-                                    <select name="status">
-                                        <?php foreach ($statuses as $status) { ?>
-                                            <option value="<?php echo $status; ?>"><?php echo $status; ?></option>
-                                        <?php } ?>
-                                    </select>
-                                    <button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
-                                </form>
-                            <?php } ?>
-							<?php if ($user_role == 'Cook') { 
-									$current_status = $row['status'];
-									if ($current_status == "ожидает курьера") 
-										$index = array_search($current_status, $role_status['Cook']) + 2;
-									else 
-										$index = array_search($current_status, $role_status['Cook']) + 1; 
-								?>
-								<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-									<input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
-									<select name="status">
-										<option value="<?php echo $role_status["Cook"][$index] ?>"><?php echo $role_status["Cook"][$index] ?></option>
-										<option value="<?php echo $role_status["Cook"][5] ?>"><?php echo $role_status["Cook"][5] ?></option>
-									</select>
-									<button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
-								</form>
-							<?php } ?>
-							<?php if ($user_role == 'Courier') { 
-									$current_status = $row['status'];
-									if ($current_status == "готов доставить") 
-										$index = array_search($current_status, $role_status['Courier']) + 2;
-									else 
-										$index = array_search($current_status, $role_status['Courier']) + 1;
-								?>
-								<form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-									<input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
-									<select name="status">
-										<option value="<?php echo $role_status["Courier"][$index] ?>"><?php echo $role_status["Courier"][$index] ?></option>
-										<option value="<?php echo $role_status["Courier"][5] ?>"><?php echo $role_status["Courier"][5] ?></option>
-									</select>
-									<?php if ($user_role == 'Courier' && ($row['status'] == 'в готовке' || $row['status'] == 'отменен' || $row['status'] == 'доставлен' || $row['status'] == 'готов доставить')) { ?>
-										<button disabled type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
-									<?php } ?>
-									<?php if ($user_role == 'Courier' && $row['status'] == 'ожидает курьера' || $row['status'] == 'переданно курьеру' || $row['status'] == 'доставляется'|| $row['status'] == 'возникла ошибка') { ?>
-										<button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
-										
-									<?php } ?>
-								</form>
-							<?php } ?>
+                        <?php if ($user_role == 'Manager') { ?>
+                            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="status-form">
+                                <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
+                                <select name="status">
+                                    <?php foreach ($statuses as $status) { ?>
+                                        <option value="<?php echo $status; ?>"><?php echo $status; ?></option>
+                                    <?php } ?>
+                                </select>
+                                <button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
+                            </form>
+                        <?php } ?>
+                        <?php if ($user_role == 'Cook') { 
+                            $current_status = $row['status'];
+                            if ($current_status == "ожидает курьера") 
+                                $index = array_search($current_status, $role_status['Cook']) + 2;
+                            else 
+                                $index = array_search($current_status, $role_status['Cook']) + 1; 
+                        ?>
+                            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="status-form">
+                                <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
+                                <select name="status">
+                                    <option value="<?php echo $role_status["Cook"][$index] ?>"><?php echo $role_status["Cook"][$index] ?></option>
+                                    <option value="<?php echo $role_status["Cook"][5] ?>"><?php echo $role_status["Cook"][5] ?></option>
+                                </select>
+                                <button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
+                            </form>
+                        <?php } ?>
+                        <?php if ($user_role == 'Courier') { 
+                            $current_status = $row['status'];
+                            if ($current_status == "готов доставить") 
+                                $index = array_search($current_status, $role_status['Courier']) + 2;
+                            else 
+                                $index = array_search($current_status, $role_status['Courier']) + 1;
+                        ?>
+                            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="status-form">
+                                <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
+                                <select name="status">
+                                    <option value="<?php echo $role_status["Courier"][$index] ?>"><?php echo $role_status["Courier"][$index] ?></option>
+                                    <option value="<?php echo $role_status["Courier"][5] ?>"><?php echo $role_status["Courier"][5] ?></option>
+                                </select>
+                                <button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
+                            </form>
+                        <?php } ?>
                         <?php if (!is_null($row['courer_id'])) { ?>
                             <h2>Курьер: <span><?php echo htmlspecialchars($row['courer_id']); ?></span></h2>
                         <?php } ?>
