@@ -249,11 +249,16 @@ main {
 .order-element {
     line-height: 1.4;
     padding: 25px;
-    width: 630px;
+    width: 610px;
     background-color: #242424;
     border-radius: 20px;
     margin-bottom: 50px;
     color: white;
+}
+
+.order-element form {
+    display: flex;
+    flex-direction: row;
 }
 
 .order-element h2 {

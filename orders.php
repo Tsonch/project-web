@@ -1,3 +1,37 @@
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+}
+require_once './back/dbConnection.php';
+
+// Функция для получения данных о заказах из базы данных
+function getOrders($statusFilter = null) {
+    global $pdo;
+
+    $sql = "SELECT * FROM orders";
+    
+    // Если установлен фильтр по статусу, добавляем его в запрос
+    if (!empty($statusFilter)) {
+        $statusFilter = implode("','", $statusFilter);
+        $sql .= " WHERE status IN ('$statusFilter')";
+    }
+
+    try {
+        $stmt = $pdo->query($sql);
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $orders;
+    } catch (PDOException $e) {
+        die("Error: " . $e->getMessage());
+    }
+}
+
+
+$statusFilter = isset($_POST['status']) ? $_POST['status'] : null;
+
+$orders = getOrders($statusFilter);
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -28,7 +62,7 @@
     <main>
         <div class="container-orders">
             <aside class="filter-sidebar">
-                <form method="post" action="" class="filter-form">
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="filter-form">
                     <label style="font-family: 'Stick', sans-serif;">Фильтр по статусу:</label>
                     <label><input type="checkbox" name="status[]" value="в обработке"> в обработке</label>
                     <label><input type="checkbox" name="status[]" value="ожидает готовки"> ожидает готовки</label>
@@ -43,10 +77,10 @@
                 </form>
             </aside>
             <div class="main-orders"> <!-- Карточки заказов -->
-                <div class="order-element"> <!-- Карточка заказа -->
+                <!-- <div class="order-element">
                     <h2>Заказ No<span>1</span></h2>
                     <h2>Статус: 								
-                        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="status-form">
+                        <form method="post" action="" class="status-form">
                             <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
                             <select name="status">
                                 <option value="в готовке">в готовке</option>
@@ -57,7 +91,7 @@
                             <button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
                         </form>
                     </h2>
-                    <h2>Телефон: <span>+7 902 592 57 30</span></h2>
+                    <h2>Курьер: <span>Иванов Иван Иванович</span></h2>
                     <h2>Адрес: <span>Ханты-Мансийск, ул.Чехова, 16</span></h2>
                     <h2>Комментарий:<br>
                         <textarea disabled>
@@ -72,7 +106,40 @@
                             echo substr($items, 0, -2);
                         ?></h4>
                     </details>
-                </div>
+                </div> -->
+                <?php foreach ($orders as $order): ?>
+                    <div class="order-element"> <!-- Карточка заказа -->
+                        <h2>Заказ No<span><?php echo $order['order_id']; ?></span></h2>
+                        <div class="order-details">
+                            <div class="status-section">
+                                <h2>Статус:</h2>
+                                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="status-form">
+                                    <input type="hidden" name="order_id" value="<?php echo $order['order_id']; ?>">
+                                    <select name="status">
+                                        <option value="в готовке" <?php if ($order['status'] == 'в готовке') echo 'selected'; ?>>в готовке</option>
+                                        <option value="ожидает курьера" <?php if ($order['status'] == 'ожидает курьера') echo 'selected'; ?>>ожидает курьера</option>
+                                        <option value="отмена" <?php if ($order['status'] == 'отмена') echo 'selected'; ?>>отмена</option>
+                                        <option value="переданно курьеру" <?php if ($order['status'] == 'переданно курьеру') echo 'selected'; ?>>переданно курьеру</option>
+                                    </select>
+                                    <button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
+                                </form>
+                            </div>
+                            <div class="info-section">
+                                <?php if (!empty($order['courier_id'])): ?>
+                                    <h2>Курьер: <span><?php echo $order['courier_id']; ?></span></h2>
+                                <?php endif; ?>
+                                <h2>Адрес: <span><?php echo $order['address']; ?></span></h2>
+                                <h2>Комментарий:</h2>
+                                <textarea disabled><?php echo $order['comment']; ?></textarea>
+                                <h2>Сумма: <span><?php echo $order['total_price']; ?> руб.</span></h2>
+                            </div>
+                        </div>
+                        <details>
+                            <summary>Показать товары</summary>
+                            <h4><?php echo $order['item_list']; ?></h4>
+                        </details>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </main>
