@@ -5,11 +5,13 @@ $item_id = $_POST['id'];
 $name = $_POST['name'];
 $description = $_POST['description'];
 $price = $_POST['price'];
+$grams = $_POST['grams'];
+$category = $_POST['category'];
 // $comment = mysqli_query($connect, "SELECT * FROM `Feedback` WHERE `id` = '$id'");
 // $comment = mysqli_fetch_assoc($comment);
 if(empty($_FILES['image']['name'])) {
 try {
-    $query = "UPDATE Items SET Name = '$name', Price = '$price', Description = '$description' WHERE Item_ID = '$item_id'";
+    $query = "UPDATE Items SET Name = '$name', Price = '$price', Description = '$description', Grams = '$grams', Category = '$category' WHERE Item_ID = '$item_id'";
     $pdo->exec($query);
 }
 catch (PDOException $e) {
@@ -29,11 +31,13 @@ else {
     }
     $description = $_POST['description'];
     $price = $_POST['price'];
+    $grams = $_POST['grams'];
+    $category = $_POST['category'];
 
     move_uploaded_file($file['tmp_name'], $imagepath);
 
     try {
-        $query = "UPDATE Items SET Name = '$name', Img_Path = '$imagepath', Price = '$price', Description = '$desc' WHERE Item_ID = $item_id";
+        $query = "UPDATE Items SET Name = '$name', Img_Path = '$imagepath', Price = '$price', Description = '$description', Grams = '$grams', Category = '$category' WHERE Item_ID = $item_id";
         $pdo->exec($query);
     }
     catch (PDOException $e) {

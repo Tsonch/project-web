@@ -64,6 +64,14 @@ require_once './back/dbConnection.php';
                             <label for="inputPrice" class="form-label h3">Цена</label>
                             <input type="number" name='price' class="form-control" id="inputPrice" required>
                         </div>
+                        <div class="col-6">
+                            <label for="inputGrams" class="form-label h3">Граммы</label>
+                            <input type="number" name='grams' class="form-control" id="inputGrams" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="inputCategory" class="form-label h3">Категория</label>
+                            <input type="text" name='category' class="form-control" id="inputCategory" required>
+                        </div>
                         <div class="col-12">
                             <div class="input-group mb-3 h4">
                                 <span hidden class="input-group-text h4" id="inputGroupFileAddon01">Изображение</span>
@@ -102,6 +110,14 @@ require_once './back/dbConnection.php';
                             <div class="col-6">
                                 <label for="inputAddress" class="form-label h3">Цена</label>
                                 <input name="price" type="number" class="form-control" id="inputPrice" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputGrams" class="form-label h3">Граммы</label>
+                                <input name="grams" type="number" class="form-control" id="inputGrams" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputCategory" class="form-label h3">Категория</label>
+                                <input name="category" type="text" class="form-control" id="inputCategory" required>
                             </div>
                             <div class="col-12">
                                 <div class="input-group mb-3 h4">
@@ -230,7 +246,7 @@ require_once './back/dbConnection.php';
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>ЯКИТОРИ</h2>
                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                        <button type="button" style="margin-left: 20px;" class="main-btn" data-bs-toggle="modal" data-bs-target="#managerModal">Доб. товар</button>
                     <?php } ?>
                 </div>
                 <?php
@@ -271,7 +287,7 @@ require_once './back/dbConnection.php';
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>СУКИЯКИ</h2>
                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                        <button type="button" style="margin-left: 20px;" class="main-btn" data-bs-toggle="modal" data-bs-target="#managerModal">Доб. товар</button>
                     <?php } ?>
                 </div>
                 <?php
@@ -312,7 +328,7 @@ require_once './back/dbConnection.php';
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>ОКОНОМИЯКИ</h2>
                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                        <button type="button" style="margin-left: 20px;" class="main-btn" data-bs-toggle="modal" data-bs-target="#managerModal">Доб. товар</button>
                     <?php } ?>
                 </div>
                 <?php

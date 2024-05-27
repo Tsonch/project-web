@@ -14,16 +14,20 @@ if (!empty($_FILES['image']['name'])) {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $price = $_POST['price'];
+    $grams = $_POST['grams'];
+    $category = $_POST['category'];
 
     move_uploaded_file($file['tmp_name'], $imagepath);
    
-    $query = 'INSERT INTO Items (Name, Img_Path, Price, Description) VALUES (?, ?, ?, ?)';
+    $query = 'INSERT INTO Items (Name, Img_Path, Price, Description, Grams, Category) VALUES (?, ?, ?, ?, ?, ?)';
     $prepare = $pdo -> prepare($query);
     if($prepare) {
         $prepare->bindValue(1, $name);
         $prepare->bindValue(2, $imagepath);
         $prepare->bindValue(3, $price);
         $prepare->bindValue(4, $description);
+        $prepare->bindValue(5, $grams);
+        $prepare->bindValue(6, $category);
         $prepare->execute();
     }
     else {
