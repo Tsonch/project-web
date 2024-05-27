@@ -1,3 +1,13 @@
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+	header("Location: login.php");
+} else if($_SESSION['user']['role'] == "Cook") {
+	header("Location: orders.php");
+}
+require_once './back/dbConnection.php';
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -25,7 +35,7 @@
                 <a href="cart.html">Корзина</a>
                 <a href="orders.html">Панель заказов</a>
                 <button class="header-btn" data-bs-toggle="modal" data-bs-target="#orderModal">Заказы</button>
-                <a href="login.html">Выход</a>
+                <a href="/back/sign_up_and_login/logout.php">Выход</a>
             </nav>
         </div>
     </header>
