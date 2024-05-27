@@ -1,4 +1,4 @@
-.modal-dialog, 
+.modal-dialog,
 .come-from-modal.right .modal-dialog {
     position: fixed;
     margin: auto;
@@ -22,16 +22,17 @@
     transition: opacity 0.3s linear, right 0.3s ease-out;
 }
 
-/* .come-from-modal.right.fade.in .modal-dialog {
+.come-from-modal.right.fade.in .modal-dialog {
     right: 0;
-} */
+}
+
 
 .modal-background {
     background-color: rgba(54, 54, 54, 1) !important;
 }
 
 .modal-style {
-    width: 400px !important; 
+    width: 400px !important;
 }
 
 .order {

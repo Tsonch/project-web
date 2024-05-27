@@ -1,3 +1,16 @@
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+} else if ($_SESSION['user']['role'] == "Cook") {
+    header("Location: orders.php");
+} else if ($_SESSION['user']['role'] == "Manager") {
+    header("Location: index.php");
+}
+require_once './back/dbConnection.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -31,57 +44,55 @@
                 <div class="item-title"> <!-- Заголовок пукнта корзины -->
                     <h2>КОРЗИНА</h2>
                 </div>
-                <div class="item-elements"> <!-- Содержит в себе все товары в корзине -->
-                    <div class="element"> <!-- Карточка товара корзины -->
-                        <div class="element-img">
-                            <img src="assets/img/ebi-tempura.png" alt="товар">
-                        </div>
-                        <div class="element-content">
-                            <h3>ЭБИ ТЕМПУРА <span>x 2</span></h3>
-                            <div>
-                                <span>686 ₽</span><span style="margin-left: 20px;">246 гр.</span>
+                <?php
+                $user_id = $_SESSION['user']['id'];
+                $query = "SELECT Item_ID FROM User_Item WHERE User_ID = '$user_id'";
+                $cart = $pdo->query($query);
+                $number_of_rows = $cart->rowCount();
+                $total_price = 0;
+                $total_items = "";
+
+                if ($number_of_rows > 0) {
+                    while ($item = $cart->fetch(PDO::FETCH_ASSOC)) {
+                        $item_id = $item['item_id'];
+                        $query = "SELECT * FROM Items WHERE Item_ID = '$item_id'";
+                        $itemData = $pdo->query($query);
+                        $itemData = $itemData->fetch(PDO::FETCH_ASSOC);
+                        $total_price += $itemData['price'];
+                        $total_items .= $itemData['name'] . ', ';
+                ?>
+                        <div class="item-elements"> <!-- Содержит в себе все товары в корзине -->
+                            <div class="element"> <!-- Карточка товара корзины -->
+                                <div class="element-img">
+                                    <img src="<?php echo $itemData['img_path'] ?>" alt="товар">
+                                </div>
+                                <div class="element-content">
+                                    <h3><?php echo $itemData['name'] ?> <span>x 2</span></h3>
+                                    <div>
+                                        <span> <?php echo $itemData['price'] ?> ₽</span><span style="margin-left: 20px;"><?php echo $itemData['grams'] ?> гр.</span>
+                                    </div>
+                                </div>
+                                <form action="/back/CRUD/deleteCartItem.php" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="user_id" value="<?php echo $_SESSION['user']['id'] ?>">
+                                    <input type="hidden" name="item_id" value="<?php echo $item['item_id'] ?>">
+                                    <button class="cart-DelBtn" type="submit">✖</button>
+                                </form>
                             </div>
                         </div>
-                        <button class="cart-DelBtn">✖</button>
+                    <?php } ?>
+                    <div class="item-summ"> <!-- Содержит в себе сумму корзины -->
+                        <h2>Итого: <span><?php echo $total_price ?> ₽</span></h2>
                     </div>
-                </div>
-                <div class="item-elements"> <!-- Содержит в себе все товары в корзине -->
-                    <div class="element"> <!-- Карточка товара корзины -->
-                        <div class="element-img">
-                            <img src="assets/img/ebi-tempura.png" alt="товар">
-                        </div>
-                        <div class="element-content">
-                            <h3>ЭБИ ТЕМПУРА <span>x 2</span></h3>
-                            <div>
-                                <span>686 ₽</span><span style="margin-left: 20px;">246 гр.</span>
-                            </div>
-                        </div>
-                        <button class="cart-DelBtn">✖</button>
-                    </div>
-                </div>
-                <div class="item-elements"> <!-- Содержит в себе все товары в корзине -->
-                    <div class="element"> <!-- Карточка товара корзины -->
-                        <div class="element-img">
-                            <img src="assets/img/ebi-tempura.png" alt="товар">
-                        </div>
-                        <div class="element-content">
-                            <h3>ЭБИ ТЕМПУРА <span>x 2</span></h3>
-                            <div>
-                                <span>686 ₽</span><span style="margin-left: 20px;">246 гр.</span>
-                            </div>
-                        </div>
-                        <button class="cart-DelBtn">✖</button>
-                    </div>
-                </div>
-                <div class="item-summ"> <!-- Содержит в себе сумму корзины -->
-                    <h2>Итого: <span>2 000 ₽</span></h2>
-                </div>
+                <?php } ?>
             </div>
             <div class="container-item"> <!-- Содержит в себе пункт корзины -->
                 <div class="item-title"> <!-- Заголовок пукнта корзины -->
                     <h2>ОФОРМЛЕНИЕ ЗАКАЗА</h2>
                 </div>
-                <form class="card-form" method="post" enctype="multipart/form-data" action="">
+                <form class="card-form" method="post" enctype="multipart/form-data" action="/back/CRUD/createOrder.php">
+                    <input type="hidden" name="user_id" value="<?php echo $user_id ?>">
+                    <input type="hidden" name="total_price" value="<?php echo $total_price ?>">
+                    <input type="hidden" name="items_list" value="<?php echo $total_items ?>">
                     <div class="item-content">
                         <div class="form-place">
                             <div class="content-form">
@@ -93,6 +104,15 @@
                             <div class="content-form">
                                 <label for="inputAddress">Квартира <textarea class="text-flat" name="flat" id="inputAddress"></textarea></label>
                             </div>
+                        </div>
+                        <div>
+                            <select class="form-select h3" name="time_dur" aria-label="Default select example">
+                                <option selected>Как можно скорее</option>
+                                <option><?php echo date('H:i', time() + (2 * 3600) + 3600); ?></option>
+                                <option><?php echo date('H:i', time() + (2 * 3600) + (3600 * 1.5)); ?></option>
+                                <option><?php echo date('H:i', time() + (2 * 3600) + (3600 * 2)); ?></option>
+                                <option><?php echo date('H:i', time() + (2 * 3600) + (3600 * 2.5)); ?></option>
+                            </select>
                         </div>
                         <div class="content-comment">
                             <label for="exampleFormControlTextarea1">Комментарий к заказу <textarea class="text-comment" name="description" id="exampleFormControlTextarea1"></textarea></label>
