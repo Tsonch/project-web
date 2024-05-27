@@ -99,9 +99,9 @@
     </header>
     <main>
         <div class="container-orders">
-            <aside class="filter-sidebar">
-                <form method="post" action="" class="filter-form">
-                    <label style="font-family: 'Stick', sans-serif;">Фильтр по статусу:</label>
+            <div class="filter-sidebar">
+                <form id="filter-form" class="filter-form">
+                <label style="font-family: 'Stick', sans-serif;">Фильтр по статусу:</label>
                     <label><input type="checkbox" name="status[]" value="в обработке"> в обработке</label>
                     <label><input type="checkbox" name="status[]" value="ожидает готовки"> ожидает готовки</label>
                     <label><input type="checkbox" name="status[]" value="в готовке"> в готовке</label>
@@ -111,9 +111,10 @@
                     <label><input type="checkbox" name="status[]" value="доставляется"> доставляется</label>
                     <label><input type="checkbox" name="status[]" value="доставлен"> доставлен</label>
                     <label><input type="checkbox" name="status[]" value="возникла ошибка"> возникла ошибка</label>
-                    <button type="submit" class="rounded-pill btn btn-primary">Применить фильтр</button>
+                    <button type="submit">Применить фильтр</button>
+                    <button type="button" id="clear-filter">Очистить фильтр</button>
                 </form>
-            </aside>
+            </div>
             <div class="main-orders">
                 <?php while ($row = $stmt_orders->fetch(PDO::FETCH_ASSOC)) { 
                     // Проверка доступности заказа для текущей роли и статуса
@@ -123,7 +124,7 @@
                         continue;
                     } ?>
 
-                    <div class="order-element">
+                    <div class="order-element" <?php echo 'data-status="' . $row['status'] . '"'; ?> >
                         <h2>Заказ No<span><?php echo htmlspecialchars($row['order_id']); ?></span></h2>
                         <h2>Статус: <span><?php echo htmlspecialchars($row['status']); ?></span> </h2>
                         <!-- Меню выбора для каждой роли -->
@@ -205,4 +206,39 @@
         </div>
     </footer>
 </body>
+
+<script>
+    document.getElementById('filter-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        filterOrders();
+    });
+
+    document.getElementById('clear-filter').addEventListener('click', function() {
+        clearFilter();
+    });
+
+    function filterOrders() {
+        const checkboxes = document.querySelectorAll('input[name="status[]"]:checked');
+        const statuses = Array.from(checkboxes).map(checkbox => checkbox.value);
+        const orders = document.querySelectorAll('.order-element');
+        
+        orders.forEach(order => {
+            const orderStatus = order.dataset.status;
+            if (statuses.length === 0 || statuses.includes(orderStatus)) {
+                order.style.display = 'block';
+            } else {
+                order.style.display = 'none';
+            }
+        });
+    }
+
+    function clearFilter() {
+        const checkboxes = document.querySelectorAll('input[name="status[]"]');
+        checkboxes.forEach(checkbox => checkbox.checked = false);
+        const orders = document.querySelectorAll('.order-element');
+        orders.forEach(order => order.style.display = 'block');
+    }
+</script>
+
+
 </html>
