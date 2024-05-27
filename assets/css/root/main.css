@@ -180,3 +180,40 @@ main {
     font-size: 32px;
     font-weight: medium;
 }
+
+
+
+/* ПАНЕЛЬ ЗАКАЗОВ */
+
+.order-element {
+    line-height: 1.4;
+    padding: 25px;
+    width: 630px;
+    height: 670px;
+    background-color: #242424;
+    border-radius: 20px;
+    margin-bottom: 50px;
+}
+
+.order-element h2 {
+    font-size: 32px;
+    color: white;
+}
+
+.order-element details {
+    color: white;
+    font-size: 32px;
+
+}
+
+.order-element textarea {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: none; 
+    width: 465px;
+    height: 205px;
+}
