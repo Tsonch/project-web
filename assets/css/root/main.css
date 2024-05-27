@@ -89,7 +89,7 @@ main {
 
 .element-content div {
     font-size: 20px;
-    font-weight: medium;
+    font-weight: 500;
 }
 
 .main-btn {
@@ -178,32 +178,102 @@ main {
 
 .card-form label {
     font-size: 32px;
-    font-weight: medium;
+    font-weight: 500;
 }
 
 
 
 /* ПАНЕЛЬ ЗАКАЗОВ */
 
+.container-orders {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}
+
+.filter-sidebar {
+    width: 200px 1;
+    height: 30%;
+    background-color: #242424;
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 50px;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+}
+
+.filter-form label {
+    font-size: 20px;
+}
+
+.filter-form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.filter-form button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.filter-form button:hover {
+    background-color: #c5c5c5;
+}
+
+/* стили для карточек */
+
+.main-orders {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 1790px;
+    column-gap: 40px;
+}
+
 .order-element {
     line-height: 1.4;
     padding: 25px;
     width: 630px;
-    height: 670px;
     background-color: #242424;
     border-radius: 20px;
     margin-bottom: 50px;
+    color: white;
 }
 
 .order-element h2 {
     font-size: 32px;
-    color: white;
+}
+
+.order-element span {
+    font-weight: 500;
 }
 
 .order-element details {
-    color: white;
     font-size: 32px;
+}
 
+.order-element details h4 {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    color: white;
+    font-size: 24px;
+    padding-top: 10px;
 }
 
 .order-element textarea {
@@ -213,7 +283,33 @@ main {
     padding: 5px;
     font-size: 16px;
     box-sizing: border-box;
-    resize: none; 
+    resize: none;
     width: 465px;
     height: 205px;
+}
+
+.status-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.status-form select,
+.status-form button {
+    padding: 10px;
+    width: 30%;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.status-form button {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.status-form button:hover {
+    background-color: #c5c5c5;
 }
