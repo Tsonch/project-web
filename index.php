@@ -160,37 +160,33 @@ require_once './back/dbConnection.php';
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                     </div>
                     <div class="modal-body modal-background">
-                        <div class="container order">
-                            <div class="order-head">
-                                <h3 class="text-black">Заказ №10</h3>
+                    <?php
+                        $id = $_SESSION['user']['id'];
+                        $query = "SELECT * FROM orders Where user_id = $id";
+                        $orders = $pdo->query($query);
+                        while ($order = $orders->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
+                            <div class="container order">
+                                <div class="order-head">
+                                    <h3 class="text-black">Заказ №<?php echo $order['order_id'] ?></h3>
+                                </div>
+                                <div class="order-content">
+                                    <p>Адрес: <?php echo $order['address'] ?></p>
+                                    <p>Доставить к: <?php echo $order['time_duration'] ?></p>
+                                    <?php if($order['courer_id'] != null) { ?>
+                                        <p>Курьер: <?php echo $order['courer_id'] ?></p>
+                                    <?php } ?>
+                                    <label for="comment">Комментарий:</label>
+                                    <textarea name="comment" class="comm" disabled><?php echo $order['comment'] ?></textarea>
+                                    <p>Статус: <?php echo $order['status'] ?></p>
+                                    <p>Цена: <?php echo $order['total_price'] ?>р</p>
+                                    <details>
+                                        <summary>Показать товары</summary>
+                                        <h6><?php echo $order['item_list'] ?></h6>
+                                    </details>
+                                </div>
                             </div>
-                            <div class="order-content">
-                                <p>Комментарий: фвофлывтлфывлофылвлфтывлофылвотфлы</p>
-                                <p>Статус: доставляется</p>
-                                <p>Цена: 3000р</p>
-                            </div>
-                        </div>
-                        <div class="container order">
-                            <div class="order-head">
-                                <h3 class="text-black">Заказ №10</h3>
-                            </div>
-                            <div class="order-content">
-                                <label for="comment">Комментарий:</label>
-                                <textarea name="comment" class="comm" disabled>хуй</textarea>
-                                <p>Статус: доставляется</p>
-                                <p>Цена: 3000р</p>
-                            </div>
-                        </div>
-                        <div class="container order">
-                            <div class="order-head">
-                                <h3 class="text-black">Заказ №10</h3>
-                            </div>
-                            <div class="order-content">
-                                <p>Комментарий: фвофлывтлфывлофылвлфтывлофылвотфлы</p>
-                                <p>Статус: доставляется</p>
-                                <p>Цена: 3000р</p>
-                            </div>
-                        </div>
+                        <?php } ?>
                     </div>
                     <!-- <div class="modal-footer modal-background">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
