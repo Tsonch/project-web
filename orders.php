@@ -42,7 +42,7 @@
 			$statuses = ['готов доставить','доставляется', 'доставлен', 'возникла ошибка'];
 			break;
 		case 'Manager':
-			$statuses = ['в обработке', 'ожидает готовки', 'в готовке', 'ожидает курьера', 'переданно курьеру','переданно курьеру', 'отмена', 'доставляется', 'доставлен', 'возникла ошибка'];
+			$statuses = ['в обработке', 'ожидает готовки', 'в готовке', 'ожидает курьера', 'переданно курьеру', 'отмена', 'доставляется', 'доставлен', 'возникла ошибка'];
 			break;
 	}
 
@@ -118,7 +118,7 @@
             <div class="main-orders">
                 <?php while ($row = $stmt_orders->fetch(PDO::FETCH_ASSOC)) { 
                     // Проверка доступности заказа для текущей роли и статуса
-                    if ($user_role == 'Cook' && !in_array($row['status'], ['ожидает готовки', 'в готовке', 'ожидает курьера', 'отмена', 'готов доставить'])) {
+                    if ($user_role == 'Cook' && !in_array($row['status'], ['ожидает готовки', 'в готовке', 'ожидает курьера', 'готов доставить'])) {
                         continue;
                     } elseif ($user_role == 'Courier' && !in_array($row['status'], ['в готовке', 'готов доставить', 'ожидает курьера', 'доставляется', 'возникла ошибка', 'переданно курьеру'])) {
                         continue;
@@ -138,6 +138,14 @@
                                 </select>
                                 <button type="submit" class="rounded-pill btn btn-primary">Изменить статус</button>
                             </form>
+
+                            <?php if ($row['status'] == 'доставлен') { ?>
+                                <form method="post" action="back/CRUD/delete_order.php" class="delete-form">
+                                    <input type="hidden" name="order_id" value="<?php echo $row['order_id']; ?>">
+                                    <button style="margin-top: 10px;" type="submit" class="rounded-pill btn btn-danger">Удалить заказ</button>
+                                </form>
+                            <?php } ?>
+                            
                         <?php } ?>
                         <?php if ($user_role == 'Cook') { 
                             $current_status = $row['status'];

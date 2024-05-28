@@ -4,6 +4,8 @@ if (!isset($_SESSION['user'])) {
     header("Location: login.php");
 } else if ($_SESSION['user']['role'] == "Cook") {
     header("Location: orders.php");
+} else if ($_SESSION['user']['role'] == "Courier") {
+    header("Location: orders.php");
 }
 require_once './back/dbConnection.php';
 ?>
