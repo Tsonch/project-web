@@ -46,7 +46,113 @@ require_once './back/dbConnection.php';
     </header>
 
     <main>
-        <div class="modal fade come-from-modal right" tabindex="-1" role="dialog" id="orderModal" aria-labelledby="orderModalLabel" aria-hidden="true">
+
+        <form action="/back/CRUD/uploadItem.php" method="post" enctype="multipart/form-data">
+        <div class="modal fade" id="managerModal" tabindex="-1" aria-labelledby="managerModalLabel" aria-hidden="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="managerModalLabel">Новый товар</h2>
+                </div>
+                <div class="modal-body">
+                    <form action="/back/CRUD/uploadItem.php" method="post" enctype="multipart/form-data" class="row g-3">
+                        <div class="col-6">
+                            <label for="inputName" class="form-label h3">Название</label>
+                            <input type="text" name='name' class="form-control" id="inputName" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="inputPrice" class="form-label h3">Цена</label>
+                            <input type="number" name='price' class="form-control" id="inputPrice" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="inputGrams" class="form-label h3">Граммы</label>
+                            <input type="number" name='grams' class="form-control" id="inputGrams" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="inputCategory" class="form-label h3">Категория</label>
+                            <input type="text" name='category' class="form-control" id="inputCategory" required>
+                        </div>
+                        <div class="col-12">
+                            <div class="input-group mb-3 h4">
+                                <span hidden class="input-group-text h4" id="inputGroupFileAddon01">Изображение</span>
+                                <div class="form-file">
+                                    <input type="file" name="image" class="form-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label for="exampleFormControlTextarea1" class="form-label h3">Описание</label>
+                            <textarea class="form-control mt-4" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+        </form>
+
+        <div class="modal fade" id="managerModalRedact" tabindex="-1" aria-labelledby="managerModalRedactLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel">Редактирование</h2>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/back/CRUD/updateItem.php" class="row g-3" method="post" enctype="multipart/form-data">
+                            <div class="col-6">
+                                <label for="inputAddress" class="form-label h3">Название</label>
+                                <input name="name" type="text" class="form-control" id="inputName" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputAddress" class="form-label h3">Цена</label>
+                                <input name="price" type="number" class="form-control" id="inputPrice" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputGrams" class="form-label h3">Граммы</label>
+                                <input name="grams" type="number" class="form-control" id="inputGrams" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="inputCategory" class="form-label h3">Категория</label>
+                                <input name="category" type="text" class="form-control" id="inputCategory" required>
+                            </div>
+                            <div class="col-12">
+                                <div class="input-group mb-3 h4">
+                                    <span hidden class="input-group-text h4" id="inputGroupFileAddon01">Изображение</span>
+                                    <div class="form-file">
+                                        <input type="file" name="image" class="form-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="exampleFormControlTextarea1" class="form-label h3">Описание</label>
+                                <textarea name="description" class="form-control mt-4" id="desc" rows="3"></textarea>
+                            </div>
+                            <input name="id" id="item_id" type="hidden" value="">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </div>
+
+                        </form>
+                        <div class="modal-footer">
+                            <form action="/back/CRUD/deleteItem.php" style="margin-top: 10px" method="post" enctype="multipart/form-data">
+                                <input name="id" id="item_id1" type="hidden">
+                                <button type="submit" class="btn btn-primary">Удалить</button>
+                            </form>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade come-from-modal right test-class" tabindex="-1" role="dialog" id="orderModal" aria-labelledby="orderModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-style">
                 <div class="modal-content">
                     <div class="modal-header modal-background">
@@ -99,7 +205,7 @@ require_once './back/dbConnection.php';
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>ТЕМПУРА</h2>
                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                        <button type="button" style="margin-left: 20px;" class="main-btn" data-bs-toggle="modal" data-bs-target="#managerModal">Доб. товар</button>
                     <?php } ?>
                 </div>
                 <?php
@@ -141,7 +247,7 @@ require_once './back/dbConnection.php';
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>ЯКИТОРИ</h2>
                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                        <button type="button" style="margin-left: 20px;" class="main-btn" data-bs-toggle="modal" data-bs-target="#managerModal">Доб. товар</button>
                     <?php } ?>
                 </div>
                 <?php
@@ -183,7 +289,7 @@ require_once './back/dbConnection.php';
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>СУКИЯКИ</h2>
                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                        <button type="button" style="margin-left: 20px;" class="main-btn" data-bs-toggle="modal" data-bs-target="#managerModal">Доб. товар</button>
                     <?php } ?>
                 </div>
                 <?php
@@ -225,7 +331,7 @@ require_once './back/dbConnection.php';
                 <div class="item-title"> <!-- Заголовок меню -->
                     <h2>ОКОНОМИЯКИ</h2>
                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                        <button style="margin-left: 20px;" class="main-btn">Доб. товар</button>
+                        <button type="button" style="margin-left: 20px;" class="main-btn" data-bs-toggle="modal" data-bs-target="#managerModal">Доб. товар</button>
                     <?php } ?>
                 </div>
                 <?php
@@ -253,7 +359,7 @@ require_once './back/dbConnection.php';
                                         <button class="main-btn">В корзину</button>
                                     <?php } ?>
                                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                                        <button class="main-btn">Редакт.</button>
+                                        <button type="button" onclick="getModal(`<?php echo $okonomiyaki_item['name'] ?>`,<?php echo $okonomiyaki_item['price'] ?>, `<?php echo $okonomiyaki_item['description'] ?>`,<?php echo $okonomiyaki_item['item_id'] ?> )" data-bs-toggle="modal" data-bs-target="#managerModalRedact" class="main-btn">Редакт.</button>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -284,6 +390,15 @@ require_once './back/dbConnection.php';
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
+    <script>
+        function getModal(name, price, desc, id) {
+            document.getElementById("inputName").value = name;
+            document.getElementById("inputPrice").value = price;
+            document.getElementById("desc").innerText = desc;
+            document.getElementById("item_id").value = id;
+            document.getElementById("item_id1").value = id;
+        }
+    </script>
 </body>
 
 </html>
