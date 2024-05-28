@@ -1,49 +1,57 @@
-<?php 
-require_once('../dbConnection.php');
+<?php
+require_once '../dbConnection.php';
 
-$item_id = $_POST['id'];
-$name = $_POST['name'];
-$description = $_POST['description'];
-$price = $_POST['price'];
-$grams = $_POST['grams'];
-$category = $_POST['category'];
-// $comment = mysqli_query($connect, "SELECT * FROM `Feedback` WHERE `id` = '$id'");
-// $comment = mysqli_fetch_assoc($comment);
-if(empty($_FILES['image']['name'])) {
-try {
-    $query = "UPDATE Items SET Name = '$name', Price = '$price', Description = '$description', Grams = '$grams', Category = '$category' WHERE Item_ID = '$item_id'";
-    $pdo->exec($query);
-}
-catch (PDOException $e) {
-    die($e->getMessage());
-}
-}
-else {
-    $file = $_FILES['image'];
-    $filename = $file['name'];
-    $path_info = pathinfo($filename);
-    $imagepath = 'img/' . $filename; 
-    $imagepath = str_replace(" " , "_" ,$imagepath);
-    $extention = $path_info['extension'];
-    if ($extention !== "png" and $extention !== "bmp" and $extention !== "jpg" and $extention !== "jpeg") {
-        header("Location: ../../index.php");
-        exit;
-    }
-    $description = $_POST['description'];
+if (!empty($_POST['id']) && !empty($_POST['name']) && !empty($_POST['price']) && !empty($_POST['grams']) && !empty($_POST['category'])) {
+    $id = $_POST['id'];
+    $name = $_POST['name'];
     $price = $_POST['price'];
     $grams = $_POST['grams'];
     $category = $_POST['category'];
+    $description = $_POST['description'];
 
-    move_uploaded_file($file['tmp_name'], $imagepath);
+    // Обновление изображения, если новое загружено
+    if (!empty($_FILES['image']['name'])) {
+        $file = $_FILES['image'];
+        $filename = $file['name'];
+        $path_info = pathinfo($filename);
+        $imagepath = '../../assets/img/' . str_replace(' ', '_', $filename);
+        $extension = $path_info['extension'];
 
-    try {
-        $query = "UPDATE Items SET Name = '$name', Img_Path = '$imagepath', Price = '$price', Description = '$description', Grams = '$grams', Category = '$category' WHERE Item_ID = $item_id";
-        $pdo->exec($query);
+        if (!in_array($extension, ['png', 'bmp', 'jpg', 'jpeg'])) {
+            header("Location: ../../index.php");
+            exit;
+        }
+
+        if (move_uploaded_file($file['tmp_name'], $imagepath)) {
+            // Относительный путь к изображению для базы данных
+            $imagepath_db = 'assets/img/' . str_replace(' ', '_', $filename);
+            $query = 'UPDATE Items SET Name = ?, Img_Path = ?, Price = ?, Description = ?, Grams = ?, Category = ? WHERE item_id = ?';
+            $prepare = $pdo->prepare($query);
+            $prepare->bindValue(2, $imagepath_db);
+        } else {
+            echo "Ошибка при перемещении файла.";
+            exit;
+        }
+    } else {
+        $query = 'UPDATE Items SET Name = ?, Price = ?, Description = ?, Grams = ?, Category = ? WHERE item_id = ?';
+        $prepare = $pdo->prepare($query);
     }
-    catch (PDOException $e) {
-        die($e->getMessage());
+
+    if ($prepare) {
+        $prepare->bindValue(1, $name);
+        $prepare->bindValue(3, $price);
+        $prepare->bindValue(4, $description);
+        $prepare->bindValue(5, $grams);
+        $prepare->bindValue(6, $category);
+        $prepare->bindValue(7, $id);
+        $prepare->execute();
+    } else {
+        echo "Ошибка при подготовке запроса: " . $pdo->errorInfo()[2];
     }
+
+    $pdo = null;
+    header("Location: ../../index.php");
+} else {
+    echo "Недостаточно данных для обновления.";
 }
-
-header("Location: ../../index.php");
 ?>
