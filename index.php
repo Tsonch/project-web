@@ -228,13 +228,18 @@ require_once './back/dbConnection.php';
                                 <div>
                                     <?php echo $tempura_item['description'] ?>
                                 </div>
-                                <div>
-                                    <?php if ($_SESSION['user']['role'] != "Manager") { ?>
-                                        <button class="main-btn">В корзину</button>
-                                    <?php } ?>
+                                <div class="element-buttons">
+                                    <form action="/back/CRUD/addToCart.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="id" value="<?php echo $tempura_item['item_id'] ?>">
+                                        <?php if ($_SESSION['user']['role'] != "Manager") { ?>
+                                            <button type="submit" class="main-btn">В корзину</button>
+                                        <?php } ?>
+                                    </form>
                                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                                        <button class="main-btn">Редакт.</button>
+                                        <button type="button" onclick="getModal(`<?php echo $tempura_item['name'] ?>`,<?php echo $tempura_item['price'] ?>, `<?php echo $tempura_item['description'] ?>`,<?php echo $tempura_item['item_id'] ?> )" data-bs-toggle="modal" data-bs-target="#managerModalRedact" class="main-btn">Редакт.</button>
                                     <?php } ?>
+                                </div>
+                                <div>
                                 </div>
                             </div>
                         </div>
@@ -270,13 +275,18 @@ require_once './back/dbConnection.php';
                                 <div>
                                     <?php echo $yakitori_item['description'] ?>
                                 </div>
-                                <div>
-                                    <?php if ($_SESSION['user']['role'] != "Manager") { ?>
-                                        <button class="main-btn">В корзину</button>
-                                    <?php } ?>
+                                <div class="element-buttons">
+                                    <form action="/back/CRUD/addToCart.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="id" value="<?php echo $yakitori_item['item_id'] ?>">
+                                        <?php if ($_SESSION['user']['role'] != "Manager") { ?>
+                                            <button type="submit" class="main-btn">В корзину</button>
+                                        <?php } ?>
+                                    </form>
                                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                                        <button class="main-btn">Редакт.</button>
+                                        <button type="button" onclick="getModal(`<?php echo $yakitori_item['name'] ?>`,<?php echo $yakitori_item['price'] ?>, `<?php echo $yakitori_item['description'] ?>`,<?php echo $yakitori_item['item_id'] ?> )" data-bs-toggle="modal" data-bs-target="#managerModalRedact" class="main-btn">Редакт.</button>
                                     <?php } ?>
+                                </div>
+                                <div>
                                 </div>
                             </div>
                         </div>
@@ -312,13 +322,18 @@ require_once './back/dbConnection.php';
                                 <div>
                                     <?php echo $sukiyaki_item['description'] ?>
                                 </div>
-                                <div>
-                                    <?php if ($_SESSION['user']['role'] != "Manager") { ?>
-                                        <button class="main-btn">В корзину</button>
-                                    <?php } ?>
+                                <div class="element-buttons">
+                                    <form action="/back/CRUD/addToCart.php" method="post" enctype="multipart/form-data">
+                                        <input type="hidden" name="id" value="<?php echo $sukiyaki_item['item_id'] ?>">
+                                        <?php if ($_SESSION['user']['role'] != "Manager") { ?>
+                                            <button type="submit" class="main-btn">В корзину</button>
+                                        <?php } ?>
+                                    </form>
                                     <?php if ($_SESSION['user']['role'] == "Manager") { ?>
-                                        <button class="main-btn">Редакт.</button>
+                                        <button type="button" onclick="getModal(`<?php echo $sukiyaki_item['name'] ?>`,<?php echo $sukiyaki_item['price'] ?>, `<?php echo $sukiyaki_item['description'] ?>`,<?php echo $sukiyaki_item['item_id'] ?> )" data-bs-toggle="modal" data-bs-target="#managerModalRedact" class="main-btn">Редакт.</button>
                                     <?php } ?>
+                                    </div>
+                                <div>
                                 </div>
                             </div>
                         </div>

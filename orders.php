@@ -90,9 +90,9 @@
     <header>
         <div class="header-container">
             <nav class="header-nav">
-                <a href="cart.php">Корзина</a>
-                <a href="index.php">Меню</a>
-                <button class="header-btn">Заказы</button>
+                <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                    <a href="index.php">Меню</a>
+                <?php } ?>
                 <a href="/back/sign_up_and_login/logout.php">Выход</a>
             </nav>
         </div>
