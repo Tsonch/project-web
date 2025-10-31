@@ -1,0 +1,47 @@
+services:
+  main-app:
+    build: ./main-app
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+
+    restart: unless-stopped
+
+  log-service:
+    build: ./log-service
+    ports:
+      - "8001:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      
+    restart: unless-stopped
+
+  tracking-service:
+    build: ./tracking-service
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      
+    restart: unless-stopped
+
+  db:
+    image: postgres:15
+    # restart: always
+    environment:
+      POSTGRES_DB: group-5
+      POSTGRES_USER: group-5
+      POSTGRES_PASSWORD: group-5
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    restart: unless-stopped

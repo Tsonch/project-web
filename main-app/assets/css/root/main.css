@@ -1,0 +1,442 @@
+@import url('https://fonts.googleapis.com/css2?family=Stick&display=swap');
+
+main {
+    margin: 0 150px;
+}
+
+.item-title {
+    position: relative;
+    margin-bottom: 35px;
+    display: flex;
+    flex-direction: row;
+}
+
+.item-title h2 {
+    margin-bottom: 10px;
+    font-family: 'Stick', sans-serif;
+}
+
+.item-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%; 
+    height: 2px;
+    background-color: black;
+}
+
+.container-item {
+    margin-bottom: 220px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.container-item img {
+    width: 243px;
+}
+
+.item-elements {
+    display: flex;
+    /* flex-direction: row; */
+    justify-content: center;
+    /* align-items: center; */
+    flex-wrap: wrap;
+    gap: 96px;
+    margin-bottom: 20px;
+}
+
+.element {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    /* width: 318px; */
+}
+
+.element-img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.element-img span {
+    /* display: inline-block; */
+    padding-right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.element-img div {
+    padding-top: 8px;
+}
+
+.element-content {
+    /* width: 240px; */
+    /* width: 550px; */
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.element-content h3 {
+    font-size: 28px;
+    font-weight: bold;
+    font-family: 'Stick', sans-serif;
+}
+
+.element-content div {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.element-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.main-btn {
+    width: 140px;
+    cursor: pointer;
+    height: 50px;
+    font-size: 24px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+}
+
+/* Модальное окно */
+
+.col-12 {
+    margin-top: 10px;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.modal-header .modal-title {
+    font-family: 'Stick', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-body .form-label {
+    font-family: 'Stick', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
+
+.modal-body .form-control,
+.modal-body {
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+.form-file-input {
+    font-size: 18px;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.modal-footer .btn {
+    font-size: 18px;
+    border-radius: 20px;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.modal-footer .btn-primary {
+    background-color: black;
+    border-color: black;
+    color: white;
+}
+
+
+
+/* КОРЗИНА */
+
+.cart-DelBtn {
+    cursor: pointer;
+    font-size: 32px;
+    height: 30px;
+    font-weight: bold;
+    background-color: rgb(0, 0, 0, 0);
+    color: rgb(0, 0, 0);
+    border: none;
+}
+
+.main-Cardcontainer .container-item {
+    width: 750px !important;
+}
+
+.main-Cardcontainer {
+    display: flex;
+    flex-direction: row;
+    gap: 90px;
+}
+
+.main-Cardcontainer img{
+    width: 175px;
+}
+
+.card-form textarea {
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: none; 
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 35px
+}
+
+.form-place {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    /* gap: 100px */
+    /* gap:5vw; */
+}
+
+.text-street {
+    width: 12vw;
+    height: 40px;
+}
+
+.text-house {
+    width: 10vw;
+    height: 40px;
+}
+
+.text-flat {
+    width: 10vw;
+    height: 40px;
+}
+
+.text-comment {
+    width: 90%;
+    height: 85px;
+}
+
+.card-form label {
+    font-size: 32px;
+    font-weight: 500;
+}
+
+.form-select {
+    width: 30%;
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+    appearance: none; /* Скрыть стандартный стрелочный вид */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 5.646a.5.5 0 0 1 .708 0L8 11.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+
+
+/* ПАНЕЛЬ ЗАКАЗОВ */
+
+.container-orders {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+}
+
+.filter-sidebar {
+    width: 200px 1;
+    height: 30%;
+    background-color: #242424;
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 50px;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.filter-form label {
+    font-size: 20px;
+}
+
+.filter-form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.filter-form button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background-color: #ffffff;
+    color: #000000;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.filter-form button:hover {
+    background-color: #c5c5c5;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+
+/* стили для карточек */
+
+.main-orders {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 1790px;
+    column-gap: 40px;
+}
+
+.order-element {
+    line-height: 1.4;
+    padding: 25px;
+    width: 610px;
+    background-color: #242424;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    color: white;
+}
+
+.order-element form {
+    display: flex;
+    flex-direction: row;
+}
+
+.order-element h2 {
+    font-size: 32px;
+}
+
+.order-element span {
+    font-weight: 500;
+}
+
+.order-element details {
+    font-size: 32px;
+}
+
+.order-element details h4 {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    color: white;
+    font-size: 24px;
+    padding-top: 10px;
+}
+
+.order-element textarea {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    resize: none;
+    width: 465px;
+    height: 205px;
+}
+
+.status-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.status-form select,
+.status-form button {
+    padding: 10px;
+    width: 30%;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.status-form button {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.status-form button:hover {
+    background-color: #c5c5c5;
+}
