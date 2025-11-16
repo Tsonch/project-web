@@ -440,3 +440,144 @@ main {
 .status-form button:hover {
     background-color: #c5c5c5;
 }
+
+
+/* ================= Manager Summary (Logs) ================ */
+.manager-summary {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    margin: 30px 0 100px;
+    overflow: hidden;
+}
+
+.manager-summary__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.manager-summary__title {
+    font-family: 'Stick', sans-serif;
+    font-size: 28px;
+    line-height: 1.2;
+    margin: 0;
+    color: #000;
+}
+
+.manager-summary__controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ms-input, .ms-select, .ms-btn {
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #dcdcdc;
+    padding: 0 12px;
+    font-size: 14px;
+    background: #fff;
+    color: #000;
+    outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.ms-input:focus, .ms-select:focus {
+    border-color: #000;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+}
+
+.ms-btn {
+    cursor: pointer;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 0 14px;
+}
+.ms-btn--secondary {
+    background: #f1f1f1;
+    color: #000;
+    border: 1px solid #dcdcdc;
+}
+.ms-btn:hover { opacity: .9 }
+
+.manager-summary__table-wrap {
+    border: 1px solid #ededed;
+    border-radius: 12px;
+    overflow: auto;
+    max-height: 520px; /* скролл таблицы */
+}
+
+.ms-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 920px;
+}
+
+.ms-table thead th {
+    position: sticky;
+    top: 0;
+    background: #fafafa;
+    z-index: 1;
+    text-align: left;
+    font-weight: 700;
+    font-size: 14px;
+    color: #333;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.ms-table tbody td {
+    font-size: 14px;
+    color: #222;
+    padding: 12px 14px;
+    border-bottom: 1px solid #f3f3f3;
+    vertical-align: top;
+}
+
+.ms-table tbody tr:nth-child(odd) {
+    background: #fff;
+}
+.ms-table tbody tr:nth-child(even) {
+    background: #fcfcfc;
+}
+
+.ms-table tbody tr:hover {
+    background: #f7f7f7;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.badge--time {
+    background: #eef6ff;
+    color: #095aba;
+}
+.badge--session {
+    background: #eefaf2;
+    color: #0a7a3b;
+}
+.badge--cart {
+    background: #fff3e6;
+    color: #a14d00;
+}
+
+@media (max-width: 1200px) {
+    .manager-summary__controls { width: 100%; }
+    .manager-summary__table-wrap { max-height: 60vh; }
+}

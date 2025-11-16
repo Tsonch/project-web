@@ -200,7 +200,226 @@ $stmt_orders = $pdo->query($query_orders);
                         </details>
                     </div>
                 <?php } ?>
+
+
             </div>
+                <?php if ($_SESSION['user']['role'] == "Manager") { ?>
+                    <div class="manager-summary">
+                        <div class="manager-summary__header">
+                            <h2 class="manager-summary__title">Сводка по логам (заказы)</h2>
+                            <div class="manager-summary__controls">
+                            <input id="ms-filter-email" class="ms-input" type="text" placeholder="Фильтр по email">
+                            <input id="ms-filter-from"  class="ms-input" type="datetime-local" title="С даты/времени">
+                            <input id="ms-filter-to"    class="ms-input" type="datetime-local" title="По дату/время">
+                            <button id="ms-filter-apply" class="ms-btn">Фильтровать</button>
+                            <button id="ms-filter-clear" class="ms-btn ms-btn--secondary">Сброс</button>
+                            <button id="ms-export-csv"   class="ms-btn ms-btn--secondary">Копировать CSV</button>
+                            </div>
+                        </div>
+
+                        <?php
+                            $sql = <<<SQL
+                            WITH
+                            order_events AS (
+                                SELECT ul.user_id,
+                                    (regexp_match(ul.details, 'Order ID:\\s*([0-9]+)'))[1]::int AS order_id,
+                                    ul.created_at AS order_ts
+                                FROM public.user_logs ul
+                                WHERE ul.action = 'create_order'
+                            ),
+                            raw_sessions AS (
+                                SELECT user_id, action, created_at AS ts,
+                                    lead(action) OVER (PARTITION BY user_id ORDER BY created_at) AS next_action,
+                                    lead(created_at) OVER (PARTITION BY user_id ORDER BY created_at) AS next_ts
+                                FROM public.user_logs
+                                WHERE action IN ('login','logout')
+                            ),
+                            login_sessions AS (
+                                SELECT user_id, ts AS login_ts,
+                                    CASE WHEN next_action = 'logout' THEN next_ts END AS logout_ts
+                                FROM raw_sessions
+                                WHERE action = 'login'
+                            ),
+                            orders_in_sessions AS (
+                                SELECT oe.user_id, oe.order_id, oe.order_ts, ls.login_ts, ls.logout_ts
+                                FROM order_events oe
+                                LEFT JOIN LATERAL (
+                                SELECT ls.*
+                                FROM login_sessions ls
+                                WHERE ls.user_id = oe.user_id
+                                    AND ls.login_ts <= oe.order_ts
+                                    AND (ls.logout_ts IS NULL OR oe.order_ts <= ls.logout_ts)
+                                ORDER BY ls.login_ts DESC
+                                LIMIT 1
+                                ) ls ON true
+                            ),
+                            cart_events AS (
+                                SELECT ul.user_id,
+                                    ul.created_at AS ts,
+                                    CASE WHEN ul.action = 'add_to_cart' THEN 1
+                                            WHEN ul.action = 'remove_from_cart' THEN -1
+                                    END AS delta,
+                                    (regexp_match(ul.details, 'Item ID:\\s*([0-9]+)'))[1]::int AS item_id
+                                FROM public.user_logs ul
+                                WHERE ul.action IN ('add_to_cart','remove_from_cart')
+                            ),
+                            cart_until_order AS (
+                                SELECT ois.user_id, ois.order_id, ce.item_id, SUM(ce.delta) AS qty
+                                FROM orders_in_sessions ois
+                                JOIN cart_events ce
+                                ON ce.user_id = ois.user_id
+                                AND ce.ts >= COALESCE(ois.login_ts, timestamp 'epoch')
+                                AND ce.ts <= ois.order_ts
+                                GROUP BY ois.user_id, ois.order_id, ce.item_id
+                            ),
+                            cart_items_total AS (
+                                SELECT user_id, order_id, SUM(GREATEST(qty,0)) AS cart_items
+                                FROM cart_until_order
+                                GROUP BY user_id, order_id
+                            )
+                            SELECT
+                                ois.order_id,
+                                c.user_id,
+                                c.email,
+                                EXTRACT(EPOCH FROM (ois.order_ts - ois.login_ts))::int AS time_to_order_seconds,
+                                EXTRACT(EPOCH FROM (COALESCE(ois.logout_ts, ois.order_ts) - ois.login_ts))::int AS session_time_seconds,
+                                COALESCE(cit.cart_items, 0) AS cart_items,
+                                ois.order_ts
+                            FROM orders_in_sessions ois
+                            LEFT JOIN public.customer c ON c.user_id = ois.user_id
+                            LEFT JOIN cart_items_total cit ON cit.user_id = ois.user_id AND cit.order_id = ois.order_id
+                            ORDER BY ois.order_ts DESC
+                            LIMIT 200
+                            SQL;
+
+                            $stmt = $pdo->query($sql);
+                            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                            function fmt_hms($seconds) {
+                                $seconds = max(0, (int)$seconds);
+                                $h = floor($seconds / 3600);
+                                $m = floor(($seconds % 3600) / 60);
+                                $s = $seconds % 60;
+                                return sprintf('%02d:%02d:%02d', $h, $m, $s);
+                            }
+                        ?>
+
+                        <div class="manager-summary__table-wrap">
+                            <table class="ms-table" id="ms-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>User ID</th>
+                                        <th>Email</th>
+                                        <th>Время до заказа</th>
+                                        <th>Время на сайте</th>
+                                        <th>Товаров в корзине</th>
+                                        <th>Время события</th>
+                                    </tr>
+                                </thead>
+                                    <tbody>
+                                        <?php foreach ($rows as $r) { ?>
+                                            <tr
+                                            data-email="<?= htmlspecialchars($r['email']) ?>"
+                                            data-ts="<?= htmlspecialchars($r['order_ts']) ?>"
+                                            >
+                                            <td><?= htmlspecialchars($r['order_id']) ?></td>
+                                            <td><?= htmlspecialchars($r['user_id']) ?></td>
+                                            <td><?= htmlspecialchars($r['email']) ?></td>
+                                            <td><span class="badge badge--time"><?= fmt_hms($r['time_to_order_seconds']) ?></span></td>
+                                            <td><span class="badge badge--session"><?= fmt_hms($r['session_time_seconds']) ?></span></td>
+                                            <td><span class="badge badge--cart"><?= htmlspecialchars($r['cart_items']) ?></span></td>
+                                            <td><?= htmlspecialchars($r['order_ts']) ?></td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <script>
+                        (function(){
+                        const emailInput = document.getElementById('ms-filter-email');
+                        const fromInput  = document.getElementById('ms-filter-from');
+                        const toInput    = document.getElementById('ms-filter-to');
+                        const applyBtn   = document.getElementById('ms-filter-apply');
+                        const clearBtn   = document.getElementById('ms-filter-clear');
+                        const exportBtn  = document.getElementById('ms-export-csv');
+                        const table      = document.getElementById('ms-table');
+                        const rows       = Array.from(table.querySelectorAll('tbody tr'));
+
+                        function normalizeTs(ts) {
+                            // ts строка вида "2025-10-27 15:07:10.228781"
+                            // для сравнения используем Date.parse с заменой пробела на 'T'
+                            if(!ts) return NaN;
+                            const iso = ts.replace(' ', 'T');
+                            const d = Date.parse(iso);
+                            return isNaN(d) ? NaN : d;
+                        }
+
+                        function filter() {
+                            const emailQ = (emailInput.value || '').toLowerCase().trim();
+                            const fromTs = fromInput.value ? Date.parse(fromInput.value) : NaN;
+                            const toTs   = toInput.value   ? Date.parse(toInput.value)   : NaN;
+
+                            rows.forEach(tr => {
+                            const email = (tr.dataset.email || '').toLowerCase();
+                            const tsStr = tr.dataset.ts || '';
+                            const t     = normalizeTs(tsStr);
+
+                            let pass = true;
+
+                            if (emailQ && !email.includes(emailQ)) pass = false;
+                            if (!isNaN(fromTs) && !isNaN(t) && t < fromTs) pass = false;
+                            if (!isNaN(toTs)   && !isNaN(t) && t > toTs)   pass = false;
+
+                            tr.style.display = pass ? '' : 'none';
+                            });
+                        }
+
+                        function clearFilters() {
+                            emailInput.value = '';
+                            fromInput.value  = '';
+                            toInput.value    = '';
+                            filter();
+                        }
+
+                        function exportCSV() {
+                            const visible = rows.filter(tr => tr.style.display !== 'none');
+                            const header = ['order_id','user_id','email','time_to_order','session_time','cart_items','order_ts'];
+                            const lines = [header.join(',')];
+
+                            visible.forEach(tr => {
+                            const tds = tr.querySelectorAll('td');
+                            const csvRow = [
+                                tds[0].innerText.trim(), // order_id
+                                tds[1].innerText.trim(), // user_id
+                                tds[2].innerText.trim(), // email
+                                tds[3].innerText.trim(), // time_to_order
+                                tds[4].innerText.trim(), // session_time
+                                tds[5].innerText.trim(), // cart_items
+                                tds[6].innerText.trim(), // order_ts
+                            ].map(v => `"${v.replace(/"/g, '""')}"`);
+                            lines.push(csvRow.join(','));
+                            });
+
+                            const txt = lines.join('\n');
+                            navigator.clipboard.writeText(txt).then(() => {
+                            exportBtn.textContent = 'Скопировано!';
+                            setTimeout(() => exportBtn.textContent = 'Копировать CSV', 1200);
+                            });
+                        }
+
+                        applyBtn.addEventListener('click', filter);
+                        clearBtn.addEventListener('click', clearFilters);
+                        exportBtn.addEventListener('click', exportCSV);
+
+                        // По Enter в email — тоже фильтровать
+                        emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); filter(); }});
+                        })();
+                    </script>
+                <?php } ?>
+
         </div>
     </main>
     <script>
